@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Собрать ланч - Food Construct</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Open Sans', sans-serif;
+      line-height: 1.6;
+    }
+
+    header {
+      padding: 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-weight: 700;
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      font-weight: 400;
+      color: black;
+      text-decoration: none;
+      font-size: 18px;
+    }
+
+    nav a:hover {
+      color: tomato;
+    }
+
+    nav a#active {
+      color: tomato;
+    }
+
+    main {
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    h2 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .dish-block {
+      background-color: white;
+      padding: 30px 40px;
+      border-radius: 35px;
+      cursor: pointer;
+      filter: drop-shadow(17px 19px 24px rgba(0, 0, 0, 0.13));
+      text-align: center;
+      transition: 0.3s ease;
+    }
+
+    .dish-block:hover {
+      border: 2px solid tomato;
+    }
+
+    .dish-block img {
+      width: 100%;
+      border-radius: 35px;
+    }
+
+    .dish-block h3 {
+      margin-top: 15px;
+      font-size: 22px;
+    }
+
+    .dish-block p {
+      margin-top: 10px;
+    }
+
+    .dish-block .price {
+      font-size: 18px;
+    }
+
+    .dish-block .weight {
+      color: grey;
+    }
+
+    .dish-block button {
+      background-color: #f1eee9;
+      padding: 10px 30px;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 15px;
+      transition: 0.3s ease;
+    }
+
+    .dish-block:hover button {
+      background-color: tomato;
+      color: white;
+    }
+
+    footer {
+      background-color: black;
+      color: white;
+      text-align: center;
+      padding: 10px;
+      margin-top: 40px;
+    }
+
+    footer a {
+      color: white;
+      text-decoration: none;
+    }
+
+    /* Адаптивность для экранов */
+    @media (max-width: 800px) {
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Собрать ланч</h1>
+    <nav>
+      <a href="index.html">Главная</a>
+      <a id="active" href="lunch.html">Собрать ланч</a>
+      <a href="#orders">Заказы</a>
+      <a href="#contacts">Контакты</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Блок с супами -->
+    <section>
+      <h2>Супы</h2>
+      <div class="grid">
+        <div class="dish-block">
+          <img src="./media/soup1.jpg" alt="Том Ям">
+          <h3>Том Ям</h3>
+          <p class="price">365₽</p>
+          <p class="weight">300 мл</p>
+          <button>Добавить</button>
+        </div>
+
+        <div class="dish-block">
+          <img src="./media/soup2.jpg" alt="Норвежский суп">
+          <h3>Норвежский суп</h3>
+          <p class="price">270₽</p>
+          <p class="weight">350 мл</p>
+          <button>Добавить</button>
+        </div>
+
+        <div class="dish-block">
+          <img src="./media/soup3.png" alt="Борщ">
+          <h3>Борщ</h3>
+          <p class="price">240₽</p>
+          <p class="weight">400 мл</p>
+          <button>Добавить</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Блок с главными блюдами -->
+    <section>
+      <h2>Главные блюда</h2>
+      <div class="grid">
+        <div class="dish-block">
+          <img src="./media/main1.jpg" alt="Котлеты с пюре">
+          <h3>Котлеты с пюре</h3>
+          <p class="price">225₽</p>
+          <p class="weight">250 г</p>
+          <button>Добавить</button>
+        </div>
+
+        <div class="dish-block">
+          <img src="./media/main2.webp" alt="Стейк с овощами">
+          <h3>Стейк с овощами</h3>
+          <p class="price">450₽</p>
+          <p class="weight">300 г</p>
+          <button>Добавить</button>
+        </div>
+
+        <div class="dish-block">
+          <img src="./media/main3.webp" alt="Паста Болоньезе">
+          <h3>Паста Болоньезе</h3>
+          <p class="price">375₽</p>
+          <p class="weight">200 г</p>
+          <button>Добавить</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Блок с напитками -->
+    <section>
+      <h2>Напитки</h2>
+      <div class="grid">
+        <div class="dish-block">
+          <img src="./media/drink1.webp" alt="Кофе">
+          <h3>Кофе</h3>
+          <p class="price">120₽</p>
+          <p class="weight">200 мл</p>
+          <button>Добавить</button>
+        </div>
+
+        <div class="dish-block">
+          <img src="./media/drink2.webp" alt="Чай">
+          <h3>Чай</h3>
+          <p class="price">90₽</p>
+          <p class="weight">200 мл</p>
+          <button>Добавить</button>
+        </div>
+
+        <div class="dish-block">
+          <img src="./media/drink3.webp" alt="Лимонад">
+          <h3>Лимонад</h3>
+          <p class="price">150₽</p>
+          <p class="weight">300 мл</p>
+          <button>Добавить</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="contacts">
+    <p>Позвонить нам <a href="tel:+70000000000">+7-000-000-00-00</a></p>
+  </footer>
+</body>
+
+</html>
