@@ -111,11 +111,84 @@
         </div>
       </div>
     </section>
+
+    <!-- Форма заказа -->
+    <section id="order">
+      <h2>Сделать заказ</h2>
+      <form action="https://httpbin.org/post" method="POST">
+        <div class="order-section">
+          <h3>Ваш заказ</h3>
+          <label for="soup">Суп</label>
+          <select id="soup" name="soup" required>
+            <option value="">Выберите суп</option>
+            <option value="borsch">Борщ</option>
+            <option value="tom-yam">Том Ям</option>
+            <option value="norwegian-soup">Норвежский суп</option>
+          </select>
+
+          <label for="main-course">Главное блюдо</label>
+          <select id="main-course" name="main_course" required>
+            <option value="">Выберите главное блюдо</option>
+            <option value="steak">Стейк с овощами</option>
+            <option value="cutlet-potato">Котлеты с пюре</option>
+            <option value="pasta">Паста Болоньезе</option>
+          </select>
+
+          <label for="drink">Напиток</label>
+          <select id="drink" name="drink" required>
+            <option value="">Выберите напиток</option>
+            <option value="orange-juice">Апельсиновый сок</option>
+            <option value="apple-juice">Яблочный сок</option>
+            <option value="carrot-juice">Морковный сок</option>
+          </select>
+
+          <label for="comments">Комментарии к заказу</label>
+          <textarea id="comments" name="comments" rows="4"></textarea>
+        </div>
+
+        <div class="customer-details">
+          <h3>Ваши данные</h3>
+
+          <label for="name">Имя</label>
+          <input type="text" id="name" name="name" required>
+
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required>
+
+          <label>
+            <input type="checkbox" name="subscribe" checked> Получать информацию о скидках и акциях
+          </label>
+
+          <label for="phone">Номер телефона</label>
+          <input type="tel" id="phone" name="phone" required>
+
+          <label for="address">Адрес доставки</label>
+          <input type="text" id="address" name="address" required>
+          <small><i>Доставка осуществляется только по Москве</i></small>
+
+          <label>Время доставки</label>
+          <label>
+            <input type="radio" name="delivery_time" value="asap" required> Как можно скорее
+          </label>
+          <label>
+            <input type="radio" name="delivery_time" value="specific" required> К указанному времени
+          </label>
+
+          <label for="time">Укажите время доставки</label>
+          <input type="time" id="time" name="time" min="07:00" max="23:00" step="300">
+
+          <button type="reset">Сбросить</button>
+          <button type="submit">Отправить</button>
+        </div>
+      </form>
+    </section>
+
   </main>
 
   <footer id="contacts">
     <p>Позвонить нам <a href="tel:+70000000000">+7-000-000-00-00</a></p>
   </footer>
+
 </body>
 
 </html>
