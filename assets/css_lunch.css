@@ -131,6 +131,11 @@ footer a {
 }
 
 /* Форма заказов */
+
+.center-title {
+  text-align: center;
+}
+
 form {
   display: flex;
   justify-content: space-between;
