@@ -132,11 +132,8 @@ footer a {
 
 /* Форма заказов */
 
-.center-title {
-  text-align: center;
-}
-
-form {
+/* Контейнер для заказа и данных */
+.order-container {
   display: flex;
   justify-content: space-between;
   gap: 20px;
@@ -146,7 +143,13 @@ form {
 
 .order-section,
 .customer-details {
-  width: 48%;
+  flex: 1;
+  min-width: 300px;
+  /* минимальная ширина для лучшей адаптивности */
+}
+
+.center-title {
+  text-align: center;
 }
 
 label {
@@ -209,22 +212,12 @@ small {
 
 /* Масштабируемость */
 @media (max-width: 800px) {
-  .grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  form {
+  .order-container {
     flex-direction: column;
   }
 
   .order-section,
   .customer-details {
     width: 100%;
-  }
-}
-
-@media (max-width: 600px) {
-  .grid {
-    grid-template-columns: 1fr;
   }
 }
