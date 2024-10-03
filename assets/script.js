@@ -93,9 +93,9 @@ function updateOrderSummary() {
   if (!selectedSoup && !selectedMain && !selectedDrink) {
     orderSummary.innerHTML = '<p><strong>Ничего не выбрано</strong></p>';
   } else {
-    const soupText = selectedSoup ? `${selectedSoup.name} ${selectedSoup.price}₽` : 'Ничего не выбрано';
-    const mainText = selectedMain ? `${selectedMain.name} ${selectedMain.price}₽` : 'Ничего не выбрано';
-    const drinkText = selectedDrink ? `${selectedDrink.name} ${selectedDrink.price}₽` : 'Ничего не выбрано';
+    const soupText = selectedSoup ? `${selectedSoup.name} ${selectedSoup.price}₽` : 'Суп не выбран';
+    const mainText = selectedMain ? `${selectedMain.name} ${selectedMain.price}₽` : 'Блюдо не выбрано';
+    const drinkText = selectedDrink ? `${selectedDrink.name} ${selectedDrink.price}₽` : 'Напиток не выбран';
 
     const totalPrice = (selectedSoup?.price || 0) + (selectedMain?.price || 0) + (selectedDrink?.price || 0);
 
@@ -120,3 +120,4 @@ function resetOrder() {
 updateOrderSummary();
 displayDishes();
 window.addToOrder = addToOrder;
+window.resetOrder = resetOrder;
