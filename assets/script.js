@@ -100,10 +100,14 @@ function updateOrderSummary() {
     const totalPrice = (selectedSoup?.price || 0) + (selectedMain?.price || 0) + (selectedDrink?.price || 0);
 
     orderSummary.innerHTML = `
-      <p>Суп: ${soupText}</p>
-      <p>Главное блюдо: ${mainText}</p>
-      <p>Напиток: ${drinkText}</p>
-      <p>Стоимость заказа: ${totalPrice}₽</p>
+      <p><b>Суп</b></p>
+      <p>${soupText}</p>
+      <p><b>Главное блюдо</b></p>
+      <p>${mainText}</p>
+      <p><b>Напиток</b><p>
+      <p>${drinkText}</p>
+      <p><b>Стоимость заказа</b></p>
+      <p>${totalPrice}₽</p>
     `;
   }
 }
