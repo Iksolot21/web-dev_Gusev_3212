@@ -130,6 +130,27 @@ footer a {
   text-decoration: none;
 }
 
+.category {
+  margin-bottom: 40px;
+}
+
+.filters {
+  margin-bottom: 20px;
+}
+
+.filters button {
+  margin-right: 10px;
+  padding: 10px;
+  cursor: pointer;
+  border: none;
+  background-color: #f0f0f0;
+}
+
+.filters button.active {
+  background-color: #4CAF50;
+  color: white;
+}
+
 /* Форма заказов */
 
 /* Контейнер для заказа и данных */
