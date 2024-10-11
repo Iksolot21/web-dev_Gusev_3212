@@ -24,69 +24,59 @@
   <main>
     <!-- Блок с супами -->
     <section>
-      <h2>Супы</h2>
+      <h2>Выберите суп</h2>
       <!-- Фильтры для супов -->
       <section id="filters-soup">
-        <h3>Фильтры супов</h3>
-        <button class="filter-btn" data-kind="all" onclick="filterDishes('soup', 'all')">Все</button>
-        <button class="filter-btn" data-kind="veg" onclick="filterDishes('soup', 'veg')">Вегетарианские</button>
-        <button class="filter-btn" data-kind="meat" onclick="filterDishes('soup', 'meat')">Мясные</button>
-        <button class="filter-btn" data-kind="fish" onclick="filterDishes('soup', 'fish')">Рыбные</button>
+        <button class="filter-btn" data-kind="veg">Вегетарианские</button>
+        <button class="filter-btn" data-kind="meat">Мясные</button>
+        <button class="filter-btn" data-kind="fish">Рыбные</button>
       </section>
       <div id="soup-list" class="grid"></div>
     </section>
 
     <!-- Блок с главными блюдами -->
     <section>
-      <h2>Главные блюда</h2>
+      <h2>Выберите главное блюдо</h2>
       <!-- Фильтры для главных блюд -->
       <section id="filters-main">
-        <h3>Фильтры главных блюд</h3>
-        <button class="filter-btn" data-kind="all" onclick="filterDishes('main', 'all')">Все</button>
-        <button class="filter-btn" data-kind="veg" onclick="filterDishes('main', 'veg')">Вегетарианские</button>
-        <button class="filter-btn" data-kind="meat" onclick="filterDishes('main', 'meat')">Мясные</button>
-        <button class="filter-btn" data-kind="fish" onclick="filterDishes('main', 'fish')">Рыбные</button>
+        <button class="filter-btn" data-kind="veg">Вегетарианские</button>
+        <button class="filter-btn" data-kind="meat">Мясные</button>
+        <button class="filter-btn" data-kind="fish">Рыбные</button>
       </section>
       <div id="main-list" class="grid"></div>
     </section>
 
     <!-- Блок с напитками -->
     <section>
-      <h2>Напитки</h2>
+      <h2>Выберите напиток</h2>
       <!-- Фильтры для напитков -->
       <section id="filters-drink">
-        <h3>Фильтры напитков</h3>
-        <button class="filter-btn" data-kind="all" onclick="filterDishes('drink', 'all')">Все</button>
-        <button class="filter-btn" data-kind="soda" onclick="filterDishes('drink', 'soda')">Газированные</button>
-        <button class="filter-btn" data-kind="juice" onclick="filterDishes('drink', 'juice')">Соки</button>
-        <button class="filter-btn" data-kind="alcohol" onclick="filterDishes('drink', 'alcohol')">Алкогольные</button>
+        <button class="filter-btn" data-kind="cold">Холодные</button>
+        <button class="filter-btn" data-kind="hot">Горячие</button>
       </section>
       <div id="drink-list" class="grid"></div>
     </section>
 
     <!-- Блок с салатами и стартерами -->
     <section>
-      <h2>Салаты и стартеры</h2>
+      <h2>Выберите салат или стартер</h2>
       <!-- Фильтры для салатов -->
       <section id="filters-salad">
-        <h3>Фильтры салатов</h3>
-        <button class="filter-btn" data-kind="all" onclick="filterDishes('salad', 'all')">Все</button>
-        <button class="filter-btn" data-kind="veg" onclick="filterDishes('salad', 'veg')">Вегетарианские</button>
-        <button class="filter-btn" data-kind="meat" onclick="filterDishes('salad', 'meat')">Мясные</button>
-        <button class="filter-btn" data-kind="fish" onclick="filterDishes('salad', 'fish')">Рыбные</button>
+        <button class="filter-btn" data-kind="veg">Вегетарианские</button>
+        <button class="filter-btn" data-kind="meat">Мясные</button>
+        <button class="filter-btn" data-kind="fish">Рыбные</button>
       </section>
       <div id="salad-list" class="grid"></div>
     </section>
 
     <!-- Блок с десертами -->
     <section>
-      <h2>Десерты</h2>
+      <h2>Выберите десерт</h2>
       <!-- Фильтры для десертов -->
       <section id="filters-dessert">
-        <h3>Фильтры десертов</h3>
-        <button class="filter-btn" data-kind="all" onclick="filterDishes('dessert', 'all')">Все</button>
-        <button class="filter-btn" data-kind="veg" onclick="filterDishes('dessert', 'veg')">Вегетарианские</button>
-        <button class="filter-btn" data-kind="sweet" onclick="filterDishes('dessert', 'sweet')">Сладкие</button>
+        <button class="filter-btn" data-kind="small">Маленькая порция</button>
+        <button class="filter-btn" data-kind="medium">Средняя порция</button>
+        <button class="filter-btn" data-kind="large">Большая порция</button>
       </section>
       <div id="dessert-list" class="grid"></div>
     </section>
@@ -98,12 +88,18 @@
         <div class="order-section">
           <h3>Ваш заказ</h3>
           <div id="order-summary">
-            <p>Суп: <span id="order-soup">Ничего не выбрано</span></p>
-            <p>Главное блюдо: <span id="order-main">Ничего не выбрано</span></p>
-            <p>Напиток: <span id="order-drink">Ничего не выбрано</span></p>
-            <p>Салат или стартер: <span id="order-salad">Ничего не выбрано</span></p>
-            <p>Десерт: <span id="order-dessert">Ничего не выбрано</span></p>
-            <p>Стоимость заказа: <span id="order-price">0₽</span></p>
+            <p><b>Суп</b></p>
+            <p><span id="order-soup">Ничего не выбрано</span></p>
+            <p><b>Главное блюдо</b></p>
+            <p><span id="order-main">Ничего не выбрано</span></p>
+            <p><b>Напиток</b></p>
+            <p><span id="order-drink">Ничего не выбрано</span></p>
+            <p><b>Салат или стартер</b></p>
+            <p><span id="order-salad">Ничего не выбрано</span></p>
+            <p><b>Десерт</b></p>
+            <p><span id="order-dessert">Ничего не выбрано</span></p>
+            <p><b>Стоимость заказа</b></p>
+            <p><span id="order-price">0₽</span></p>
           </div>
           <textarea id="comments" name="comments" placeholder="Комментарии к заказу"></textarea>
           <button type="button" onclick="resetOrder()">Сбросить заказ</button>

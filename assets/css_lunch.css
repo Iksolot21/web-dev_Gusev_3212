@@ -135,24 +135,47 @@ footer a {
 }
 
 .filters {
-  margin-bottom: 20px;
+  margin-bottom: 40px;
+  display: inline-flex;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.filters button {
-  margin-right: 10px;
-  padding: 10px;
+.filter-btn {
+  padding: 10px 20px;
   cursor: pointer;
   border: none;
   background-color: #f0f0f0;
+  color: #333;
+  font-size: 14px;
+  transition: background-color 0.3s, color 0.3s;
 }
 
-.filters button.active {
+.filter-btn:not(:last-child) {
+  border-right: 1px solid #ddd;
+}
+
+.filter-btn:first-child {
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+
+.filter-btn:last-child {
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.filter-btn.active {
   background-color: #4CAF50;
   color: white;
 }
 
-/* Форма заказов */
+.filter-btn:hover:not(.active) {
+  background-color: #e0e0e0;
+}
 
+/* Форма заказов */
 /* Контейнер для заказа и данных */
 .order-container {
   display: flex;
