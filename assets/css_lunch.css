@@ -48,10 +48,15 @@ main {
   margin: 0 auto;
 }
 
+
 h2 {
   font-size: 24px;
   font-weight: 700;
-  margin-bottom: 20px;
+  margin-top: 30px;
+}
+
+main>section:first-child h2 {
+  margin-top: 0;
 }
 
 .grid {
@@ -135,7 +140,6 @@ footer a {
 }
 
 .filters {
-  margin-bottom: 40px;
   display: inline-flex;
   border-radius: 20px;
   overflow: hidden;
@@ -150,6 +154,7 @@ footer a {
   color: #333;
   font-size: 14px;
   transition: background-color 0.3s, color 0.3s;
+  margin-bottom: 10px;
 }
 
 .filter-btn:not(:last-child) {
