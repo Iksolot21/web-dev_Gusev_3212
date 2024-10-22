@@ -1,3 +1,4 @@
+/* Общие настройки */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -9,6 +10,7 @@ body {
   line-height: 1.6;
 }
 
+/* Заголовок */
 header {
   padding: 20px;
   text-align: center;
@@ -20,6 +22,7 @@ header h1 {
   margin-bottom: 10px;
 }
 
+/* Навигация */
 nav {
   display: flex;
   justify-content: center;
@@ -42,12 +45,12 @@ nav a#active {
   color: tomato;
 }
 
+/* Основной контент */
 main {
   padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
 }
-
 
 h2 {
   font-size: 24px;
@@ -59,12 +62,14 @@ main>section:first-child h2 {
   margin-top: 0;
 }
 
+/* Сетка */
 .grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
 }
 
+/* Блоки с блюдами */
 .dish-block {
   background-color: white;
   padding: 30px 40px;
@@ -122,6 +127,7 @@ main>section:first-child h2 {
   color: white;
 }
 
+/* Футер */
 footer {
   background-color: black;
   color: white;
@@ -135,6 +141,7 @@ footer a {
   text-decoration: none;
 }
 
+/* Фильтры */
 .category {
   margin-bottom: 40px;
 }
@@ -181,7 +188,6 @@ footer a {
 }
 
 /* Форма заказов */
-/* Контейнер для заказа и данных */
 .order-container {
   display: flex;
   justify-content: space-between;
