@@ -1,3 +1,88 @@
+/* CSS для уведомлений */
+
+#notification-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 20px;
+  border-radius: 8px;
+  z-index: 1000;
+  text-align: center;
+  display: none;
+  /* начально скрыто */
+}
+
+#notification-content {
+  margin-bottom: 10px;
+}
+
+#close-notification {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+#close-notification:hover {
+  background-color: #45a049;
+}
+
+.centered-heading {
+  text-align: center;
+  margin: 0;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, auto);
+}
+
+.combo-option {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-radius: 8px;
+  text-align: center;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+  overflow: hidden;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Каждый элемент комбо */
+.emoji-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 15px;
+  padding: 5px;
+}
+
+.emoji-button {
+  font-size: 36px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.emoji-button:hover {
+  transform: scale(1.2);
+}
+
+.dish-name {
+  margin-top: 8px;
+  font-size: 18px;
+  font-weight: 500;
+  text-align: center;
+}
+
+
+
 /* Общие настройки */
 * {
   box-sizing: border-box;
@@ -275,4 +360,54 @@ small {
   .customer-details {
     width: 100%;
   }
+}
+
+/* Уведомления */
+#notification-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  max-width: 300px;
+  padding: 15px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  color: #ffffff;
+  font-size: 16px;
+  opacity: 0;
+  transition: opacity 0.4s, transform 0.4s;
+}
+
+#notification-container.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.notification-success {
+  background-color: #4CAF50;
+}
+
+.notification-error {
+  background-color: #f44336;
+}
+
+/* Анимация для уведомлений */
+@keyframes slideIn {
+  0% {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Активный стиль для фильтров */
+.filter-btn.active {
+  background-color: #4CAF50;
+  color: white;
+  font-weight: bold;
+  box-shadow: 0px 4px 10px rgba(76, 175, 80, 0.4);
 }

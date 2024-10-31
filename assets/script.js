@@ -1,5 +1,6 @@
 import { dishes } from './dishes.js';
 
+// Состояние выбранных блюд
 let selectedSoup = null;
 let selectedMain = null;
 let selectedDrink = null;
@@ -13,6 +14,54 @@ const currentFilters = {
   salad: 'all',
   dessert: 'all'
 };
+
+// Добавляем стили для уведомления
+const notificationStyles = `
+.notification {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  text-align: center;
+  min-width: 300px;
+}
+
+.notification button {
+  margin-top: 15px;
+  padding: 8px 20px;
+  background: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.notification button:hover {
+  background: white;
+  color: #4CAF50;
+  border: 1px solid #4CAF50;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}`;
+
+// Добавляем стили на страницу
+const styleSheet = document.createElement('style');
+styleSheet.textContent = notificationStyles;
+document.head.appendChild(styleSheet);
 
 function calculateTotalPrice() {
   return (
@@ -90,6 +139,77 @@ function resetOrder() {
   updateOrderVisibility();
 }
 
+// Функция проверки валидности комбо
+function validateCombo() {
+  // Проверяем есть ли хоть что-то выбрано
+  const hasAnySelection = selectedSoup || selectedMain || selectedDrink ||
+    selectedSalad || selectedDessert;
+
+  if (!hasAnySelection) {
+    return "Ничего не выбрано. Выберите блюда для заказа";
+  }
+
+  // Проверяем наличие напитка
+  const hasDrink = selectedDrink !== null;
+  if (!hasDrink && (selectedMain || selectedSoup || selectedSalad)) {
+    return "Выберите напиток";
+  }
+
+  // Проверяем комбинации с супом
+  if (selectedSoup && !selectedMain && !selectedSalad) {
+    return "Выберите главное блюдо/салат/стартер";
+  }
+
+  // Проверяем комбинации с салатом
+  if (selectedSalad && !selectedSoup && !selectedMain) {
+    return "Выберите суп или главное блюдо";
+  }
+
+  // Проверяем базовые требования
+  if ((selectedDrink || selectedDessert) && !selectedMain) {
+    return "Выберите главное блюдо";
+  }
+
+  // Проверяем валидные комбинации
+  const validCombinations = [
+    // Комбо 1: Суп + Главное + Салат + Напиток
+    selectedSoup && selectedMain && selectedSalad && selectedDrink,
+    // Комбо 2: Суп + Главное + Напиток
+    selectedSoup && selectedMain && selectedDrink && !selectedSalad,
+    // Комбо 3: Суп + Салат + Напиток
+    selectedSoup && selectedSalad && selectedDrink && !selectedMain,
+    // Комбо 4: Главное + Салат + Напиток
+    selectedMain && selectedSalad && selectedDrink && !selectedSoup,
+    // Комбо 5: Главное + Напиток
+    selectedMain && selectedDrink && !selectedSoup && !selectedSalad
+  ];
+
+  return validCombinations.some(combo => combo) ? "" : "Неверная комбинация блюд";
+}
+
+// Функция создания и показа уведомления
+function showNotification(message) {
+  const overlay = document.createElement('div');
+  overlay.className = 'overlay';
+
+  const notification = document.createElement('div');
+  notification.className = 'notification';
+
+  notification.innerHTML = `
+    <p>${message}</p>
+    <button>Окей👌</button>
+  `;
+
+  const button = notification.querySelector('button');
+  button.addEventListener('click', () => {
+    overlay.remove();
+    notification.remove();
+  });
+
+  document.body.appendChild(overlay);
+  document.body.appendChild(notification);
+}
+
 function displayDishes(category, kind) {
   const container = document.getElementById(`${category}-list`);
   container.innerHTML = '';
@@ -118,7 +238,6 @@ function displayDishes(category, kind) {
     container.appendChild(dishBlock);
   });
 
-  console.log(`Фильтрация по категории: ${category}, тип: ${currentFilters[category]}`);
   updateFilterButtons(category);
 }
 
@@ -152,6 +271,23 @@ function initializePage() {
       displayDishes(category, kind);
     });
   });
+
+  // Добавляем обработчик отправки формы
+  document.querySelector('form.custom-detail').addEventListener('submit', function (event) {
+    event.preventDefault();
+    const validationMessage = validateCombo();
+
+    if (validationMessage) {
+      showNotification(validationMessage);
+    } else {
+      // Если валидация прошла успешно, можно отправлять форму
+      // this.submit();
+      console.log('Форма валидна, можно отправлять');
+    }
+  });
+
+  // Добавляем обработчик для кнопки сброса заказа
+  document.getElementById('resetOrderButton').addEventListener('click', resetOrder);
 
   updateOrderVisibility();
 }
