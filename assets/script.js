@@ -69,7 +69,7 @@ document.head.appendChild(styleSheet);
 // Функция для загрузки данных о блюдах с API
 async function loadDishes() {
   try {
-    const response = await fetch('http://lab7-api.std-900.ist.mospolytech.ru/api/dishes');
+    const response = await fetch('https://api.allorigins.win/raw?url=http://lab7-api.std-900.ist.mospolytech.ru/api/dishes');
     const data = await response.json();
     console.log('Загруженные блюда:', data);
     dishes = data;
