@@ -1,6 +1,5 @@
 // Загруженные блюда
 let dishes = [];
-const baseImageUrl = 'http://example.com/images/';
 
 // Состояние выбранных блюд
 let selectedSoup = null;
@@ -87,7 +86,6 @@ function displayAllDishes() {
 }
 
 // Функция для отображения блюд по категории и фильтру
-// Функция для отображения блюд по категории и фильтру
 function displayDishes(category, kind = 'all') {
   const container = document.getElementById(`${category}-list`);
 
@@ -115,13 +113,18 @@ function displayDishes(category, kind = 'all') {
   filteredDishes.forEach(dish => {
     const dishBlock = document.createElement('div');
     dishBlock.classList.add('dish-block');
+
+    // Проверка на наличие изображения
+    const imageSrc = dish.image ? dish.image : 'https://via.placeholder.com/150';
+
     dishBlock.innerHTML = `
-<img src="${baseImageUrl + dish.image}" alt="${dish.name}">
-<h3>${dish.name}</h3>
-<p class="price">${dish.price}₽</p>
-<p class="weight">${dish.count}</p>
-<button data-dish="${dish.keyword}" onclick="addToOrder('${dish.keyword}')">Добавить</button>
-`;
+      <img src="${imageSrc}" alt="${dish.name}" onerror="this.onerror=null; this.src='https://via.placeholder.com/150';">
+      <h3>${dish.name}</h3>
+      <p class="price">${dish.price}₽</p>
+      <p class="weight">${dish.count}</p>
+      <button data-dish="${dish.keyword}" onclick="addToOrder('${dish.keyword}')">Добавить</button>
+    `;
+
     container.appendChild(dishBlock);
   });
 
