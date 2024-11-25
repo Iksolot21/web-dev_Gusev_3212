@@ -17,7 +17,16 @@ function isEmptyOrder(order) {
 }
 
 function displayOrderSummary(fullOrder) {
+  console.log('Отображаем заказ:', fullOrder); // Отладка
+
   const orderSummary = document.getElementById('orderSummary');
+  orderSummary.innerHTML = ''; // Очищаем перед добавлением
+
+  if (isEmptyOrder(fullOrder)) {
+    orderSummary.innerHTML = '<p><b>Ничего не выбрано. Чтобы добавить блюда в заказ, перейдите на страницу <a href="lunch.html">Собрать ланч</a>.</b></p>';
+    return;
+  }
+
   const totalPriceDisplay = document.createElement('div');
   totalPriceDisplay.className = 'total-price';
 
@@ -35,7 +44,6 @@ function displayOrderSummary(fullOrder) {
 
   Object.entries(categories).forEach(([category, categoryTitle]) => {
     const dish = fullOrder[category];
-
     if (dish) {
       const orderSection = document.createElement('div');
       orderSection.className = 'order-section';
@@ -85,18 +93,29 @@ function removeDish(category, cardElement) {
   const fullOrder = LocalStorageService.getFullOrder();
 
   fullOrder[category] = null;
+
+  // Пересчитываем и удаляем totalPrice, если нужно
+  fullOrder.totalPrice = calculateTotalPrice(fullOrder);
+  if (isEmptyOrder(fullOrder)) {
+    delete fullOrder.totalPrice;
+  }
+
   LocalStorageService.saveFullOrder(fullOrder);
 
   const orderSection = cardElement.closest('.order-section');
   orderSection.remove();
 
   const totalPrice = calculateTotalPrice(fullOrder);
-  document.getElementById('totalPriceDisplay').textContent = totalPrice;
+  const totalPriceDisplay = document.getElementById('totalPriceDisplay');
+  if (totalPriceDisplay) {
+    totalPriceDisplay.textContent = totalPrice;
+  }
 
   if (isEmptyOrder(fullOrder)) {
-    window.location.href = 'lunch.html';
+    window.location.href = 'order.html';
   }
 }
+
 
 function calculateTotalPrice(order) {
   return Object.keys(order)
