@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Оформление заказа</title>
+  <link rel="stylesheet" href="assets/css_lunch.css">
+  <link rel="stylesheet" href="assets/order.css">
+</head>
+
+<body>
+  <header>
+    <h1>Собрать ланч</h1>
+    <nav>
+      <a href="index.html">Главная</a>
+      <a href="lunch.html">Собрать ланч</a>
+      <a href="order.html">Заказ</a>
+      <a href="#contacts">Контакты</a>
+    </nav>
+  </header>
+
+  <section id="order">
+    <h2 class="center-title">Сделать заказ</h2>
+    <div class="order-container">
+      <div class="order-section">
+        <div id="order-summary">
+          <div class="order-container">
+            <section id="orderSummary">
+            </section>
+          </div>
+          <textarea id="comments" name="comments" placeholder="Комментарии к заказу"></textarea>
+        </div>
+      </div>
+      <div class="customer-details">
+        <h2>Ваши данные</h2>
+        <label for="name">Имя</label>
+        <input type="text" id="name" name="name" required="">
+
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required="">
+
+        <label>
+          <input type="checkbox" name="subscribe" checked=""> Получать информацию о скидках и акциях
+        </label>
+
+        <label for="phone">Номер телефона</label>
+        <input type="tel" id="phone" name="phone" required="">
+
+        <label for="address">Адрес доставки</label>
+        <input type="text" id="address" name="address" required="">
+        <small><i>Доставка осуществляется только по Москве</i></small>
+
+        <label>Время доставки</label>
+        <label>
+          <input type="radio" name="delivery_time" value="asap" required=""> Как можно скорее
+        </label>
+        <label>
+          <input type="radio" name="delivery_time" value="specific" required=""> К указанному времени
+        </label>
+
+        <label for="time">Укажите время доставки</label>
+        <input type="time" id="time" name="time" min="07:00" max="23:00" step="300">
+        <small><i>Доступное время доставки с 7:00 до 23:00</i></small>
+
+        <button type="submit"> Подтвердить заказ</button>
+      </div>
+    </div>
+
+    <script type="module" src="assets/order.js"></script>
+</body>
+
+</html>

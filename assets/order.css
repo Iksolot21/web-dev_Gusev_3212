@@ -1,0 +1,79 @@
+/* Общие стили для контейнера заказа */
+.order-container {
+  max-width: 800px;
+  margin: 0 auto;
+  margin-top: 10px
+}
+
+
+
+.dish-block,
+.dish-card {
+  border: 1px solid #ccc;
+  /* Светло-серая граница */
+  border-radius: 8px;
+  /* Округление углов */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  /* Тень для объема */
+}
+
+.dish-block,
+.dish-card {
+  display: flex;
+  flex-direction: column;
+  /* Элементы располагаются вертикально */
+  align-items: center;
+  /* Центровка содержимого по горизонтали */
+  text-align: center;
+  /* Центровка текста */
+  padding: 20px;
+}
+
+
+/* Стили для карточки блюда */
+.dish-card {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.dish-card img {
+  width: 100%;
+  height: auto;
+  border-color: gray;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.dish-card-info {
+  flex-grow: 1;
+}
+
+.dish-card-info h3 {
+  margin-bottom: 5px;
+}
+
+.dish-card-info p {
+  margin-bottom: 10px;
+}
+
+/* Стили для кнопки удаления */
+.remove-dish {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.remove-dish:hover {
+  background-color: #df3a30;
+}
