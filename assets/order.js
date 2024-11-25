@@ -133,7 +133,7 @@ function handleOrderSubmit(event) {
   };
 
   // Пример отправки данных на сервер при помощи fetch
-  fetch('https://edu.std-900.ist.mospolytech.ru/labs/api/orders?api_key=51b2819e-4751-42cf-b166-e18bf8f957cb', {
+  fetch('http://api.allorigins.win/get?url=https://edu.std-900.ist.mospolytech.ru/labs/api/orders?api_key=51b2819e-4751-42cf-b166-e18bf8f957cb', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
