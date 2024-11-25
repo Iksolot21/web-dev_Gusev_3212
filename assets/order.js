@@ -127,14 +127,14 @@ function handleOrderSubmit(event) {
   event.preventDefault();
 
   const formData = {
-    name: document.getElementById('nameInput').value,
-    phone: document.getElementById('phoneInput').value,
-    email: document.getElementById('emailInput').value,
+    name: document.getElementById('name').value,
+    phone: document.getElementById('phone').value,
+    email: document.getElementById('email').value,
     order: LocalStorageService.getFullOrder()
   };
 
   // Пример отправки данных на сервер при помощи fetch
-  fetch('url-to-server-endpoint', {
+  fetch('https://edu.std-900.ist.mospolytech.ru/labs/api/orders', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -153,4 +153,74 @@ function handleOrderSubmit(event) {
     .catch(error => {
       alert('Произошла ошибка при отправке заказа: ' + error.message);
     });
+
+  // Получаем данные из localStorage и формы
+  function handleOrderSubmit(event) {
+    event.preventDefault();
+
+    const fullOrder = LocalStorageService.getFullOrder();
+    if (!fullOrder || isEmptyOrder(fullOrder)) {
+      alert('Ваш заказ пуст. Пожалуйста, выберите блюда перед оформлением.');
+      return;
+    }
+
+    // Собираем данные из формы
+    const formData = {
+      full_name: document.getElementById('name').value,
+      email: document.getElementById('email').value,
+      subscribe: document.querySelector('input[name="subscribe"]').checked ? 1 : 0,
+      phone: document.getElementById('phone').value,
+      delivery_address: document.getElementById('address').value,
+      delivery_type: document.querySelector('input[name="delivery_time"]:checked').value,
+      delivery_time: document.getElementById('time').value,
+      comment: document.getElementById('comments').value || '',
+      soup_id: fullOrder.soup?.id || null,
+      main_course_id: fullOrder.main?.id || null,
+      salad_id: fullOrder.salad?.id || null,
+      drink_id: fullOrder.drink?.id || null,
+      dessert_id: fullOrder.dessert?.id || null,
+    };
+
+    // Проверяем данные перед отправкой
+    if (!validateOrder(formData)) {
+      alert('Пожалуйста, заполните все обязательные поля.');
+      return;
+    }
+
+    // Отправка данных
+    fetch('https://edu.std-900.ist.mospolytech.ru/labs/api/orders', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: new URLSearchParams(formData).toString(),
+    })
+      .then(response => {
+        if (!response.ok) {
+          return response.json().then(err => {
+            throw new Error(err.error || 'Ошибка при оформлении заказа');
+          });
+        }
+        return response.json();
+      })
+      .then(data => {
+        alert('Ваш заказ успешно оформлен! Спасибо!');
+        LocalStorageService.clearFullOrder(); // Очищаем заказ в localStorage
+        window.location.href = 'lunch.html'; // Возвращаем пользователя на главную
+      })
+      .catch(error => {
+        alert(`Произошла ошибка: ${error.message}`);
+      });
+  }
+
+  // Проверка заполненности формы
+  function validateOrder(data) {
+    const requiredFields = ['full_name', 'email', 'phone', 'delivery_address', 'delivery_type', 'soup_id', 'main_course_id', 'salad_id', 'drink_id', 'dessert_id'];
+    return requiredFields.every(field => data[field]);
+  }
+
+  // Добавляем обработчик на отправку формы
+  document.getElementById('orderForm').addEventListener('submit', handleOrderSubmit);
+
 }
+
