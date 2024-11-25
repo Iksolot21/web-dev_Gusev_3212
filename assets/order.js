@@ -40,7 +40,6 @@ function displayOrderSummary(fullOrder) {
     dessert: 'Десерт'
   };
 
-  orderSummary.innerHTML = '<h2>Состав заказа</h2>';
 
   Object.entries(categories).forEach(([category, categoryTitle]) => {
     const dish = fullOrder[category];
