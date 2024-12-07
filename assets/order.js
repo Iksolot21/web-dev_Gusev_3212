@@ -114,54 +114,77 @@ function removeDish(category, cardElement) {
   }
 }
 
-function calculateTotalPrice(order) {
-  return Object.keys(order)
-    .filter(key => key !== 'totalPrice')
-    .reduce((total, category) => total + (order[category]?.price || 0), 0);
-}
+document.addEventListener('DOMContentLoaded', () => {
+  const orderForm = document.getElementById('orderForm');
+  orderForm.addEventListener('submit', handleOrderSubmit);
+});
 
 function handleOrderSubmit(event) {
   event.preventDefault();
 
-  const formElement = document.getElementById('orderForm');
-  const formData = new FormData(formElement);
+  const form = event.target;
 
-  // Добавляем данные из LocalStorage
+  const subscribeCheckbox = form.querySelector('input[name="subscribe"]');
+  const subscribeValue = subscribeCheckbox ? subscribeCheckbox.checked : false;
+
+  const deliveryType = form.querySelector('input[name="delivery_type"]:checked');
+  if (!deliveryType) {
+    alert('Выберите тип доставки.');
+    return;
+  }
+
+  const deliveryTime = form.querySelector('#delivery_time').value;
+  if (!deliveryTime && deliveryType.value === 'specific') {
+    alert('Укажите время доставки.');
+    return;
+  }
+
   const fullOrder = LocalStorageService.getFullOrder();
-
-  // Проверка наличия блюд
   if (isEmptyOrder(fullOrder)) {
     alert('Пожалуйста, сначала выберите блюда');
     return;
   }
 
-  // Добавляем только существующие блюда
-  if (fullOrder.soup && fullOrder.soup.id) {
-    formData.append('soup_id', fullOrder.soup.id);
-  }
-  if (fullOrder.main && fullOrder.main.id) {
-    formData.append('main_course_id', fullOrder.main.id);
-  }
-  if (fullOrder.salad && fullOrder.salad.id) {
-    formData.append('salad_id', fullOrder.salad.id);
-  }
-  if (fullOrder.drink && fullOrder.drink.id) {
-    formData.append('drink_id', fullOrder.drink.id);
-  }
-  if (fullOrder.dessert && fullOrder.dessert.id) {
-    formData.append('dessert_id', fullOrder.dessert.id);
+  // Создаем объект с данными заказа в формате JSON
+  const orderData = {
+    full_name: form.querySelector('#full_name').value.trim(),
+    email: form.querySelector('#email').value.trim(),
+    subscribe: subscribeValue,
+    phone: form.querySelector('#phone').value.trim(),
+    delivery_address: form.querySelector('#delivery_address').value.trim(),
+    delivery_type: deliveryType.value,
+    delivery_time: deliveryTime,
+    soup_id: fullOrder.soup ? fullOrder.soup.id : '',
+    main_course_id: fullOrder.main ? fullOrder.main.id : '',
+    salad_id: fullOrder.salad ? fullOrder.salad.id : '',
+    drink_id: fullOrder.drink ? fullOrder.drink.id : '',
+    dessert_id: fullOrder.dessert ? fullOrder.dessert.id : ''
+  };
+
+
+  // Выводим объект JSON данных заказа в консоль для отладки
+  console.log('JSON данных заказа:', orderData);
+
+  // Создаем объект FormData и заполняем его данными из объекта JSON
+  let formData = new FormData();
+  for (const key in orderData) {
+    formData.append(key, orderData[key]);
   }
 
-  console.log('Отправляем данные:');
-  for (let [key, value] of formData.entries()) {
+
+  // Выводим FormData для отправки в консоль для отладки
+  console.log('FormData для отправки:', formData);
+  for (const [key, value] of formData.entries()) {
     console.log(`${key}: ${value}`);
   }
 
+  // Отправляем запрос на сервер
   const apiKey = "51b2819e-4751-42cf-b166-e18bf8f957cb";
+  const apiUrl = `https://edu.std-900.ist.mospolytech.ru/labs/api/orders?api_key=${apiKey}`;
 
-  fetch(`https://edu.std-900.ist.mospolytech.ru/labs/api/orders?api_key=${apiKey}`, {
+  fetch(apiUrl, {
     method: 'POST',
-    body: formData
+    body: formData // Передаем объект FormData в качестве тела запроса
   })
     .then(response => {
       if (!response.ok) {
@@ -174,12 +197,15 @@ function handleOrderSubmit(event) {
     .then(data => {
       alert('Ваш заказ успешно оформлен! Спасибо!');
       LocalStorageService.clearFullOrder();
+      // Дополнительная обработка успешного ответа, если нужно
     })
     .catch(error => {
       console.error('Ошибка при отправке заказа:', error);
       alert(`Произошла ошибка: ${error.message}`);
     });
 }
+
+
 
 
 function validateOrder(data) {

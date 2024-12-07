@@ -5,22 +5,25 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>История заказов</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.16/tailwind.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+  <link rel="stylesheet" href="history.css">
 </head>
 
-<body class="bg-gray-100">
-  <header class="bg-gray-800 text-white py-4">
-    <div class="container mx-auto flex justify-between items-center">
-      <h1 class="text-2xl font-bold">История заказов</h1>
+<body>
+  <header>
+    <div>
       <nav>
-        <a href="index.html" class="hover:text-gray-400 mr-4">Главная</a>
-        <a href="lunch.html" class="hover:text-gray-400">Собрать ланч</a>
+        <a href="index.html">Главная</a>
+        <a href="lunch.html">Собрать ланч</a>
+        <a href="order.html">Оформить ланч</a>
+        <a id="active" href="history.html">Заказы</a>
+        <a href="#contact.html">Контакты</a>
       </nav>
     </div>
   </header>
 
   <main class="container mx-auto my-8">
+    <h1 class="text-2xl font-bold">История заказов</h1>
     <table class="w-full bg-white shadow-md rounded-lg overflow-hidden">
       <thead class="bg-gray-200">
         <tr>
@@ -39,67 +42,60 @@
   </main>
 
   <!-- Модальные окна -->
-  <div id="orderDetailsModal" class="fixed z-10 inset-0 overflow-y-auto hidden">
-    <div class="flex items-center justify-center min-h-screen">
-      <div class="bg-white w-full max-w-md mx-auto rounded-lg shadow-lg p-6">
-        <div class="flex justify-end">
-          <button class="text-gray-400 hover:text-gray-600" onclick="closeModal('orderDetailsModal')">
-            <i class="fas fa-times"></i>
-          </button>
-        </div>
-        <h2 class="text-2xl font-bold mb-4">Детали заказа</h2>
-        <div id="orderDetails"></div>
-        <button class="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-700"
-          onclick="closeModal('orderDetailsModal')">Закрыть</button>
-      </div>
+  <div id="viewOrderModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('viewOrderModal')">&times;</span>
+      <h2>Просмотр заказа</h2>
+      <p id="viewOrderDate"></p>
+      <p><b>Доставка</b></p>
+      <p id="viewOrderFullName"></p>
+      <p id="viewOrderAddress"></p>
+      <p id="viewOrderDeliveryTime"></p>
+      <p id="viewOrderPhone"></p>
+      <p id="viewOrderEmail"></p>
+      <p id="viewOrderComment"></p>
+      <p><b>Состав заказа</b></p>
+      <ul id="orderItemsView">
+        <!-- Список блюд будет заполнен программно -->
+      </ul>
+      <p id="totalPriceView"></p>
     </div>
   </div>
 
-  <div id="orderEditModal" class="fixed z-10 inset-0 overflow-y-auto hidden">
-    <div class="flex items-center justify-center min-h-screen">
-      <div class="bg-white w-full max-w-md mx-auto rounded-lg shadow-lg p-6">
-        <div class="flex justify-end">
-          <button class="text-gray-400 hover:text-gray-600" onclick="closeModal('orderEditModal')">
-            <i class="fas fa-times"></i>
-          </button>
-        </div>
-        <h2 class="text-2xl font-bold mb-4">Редактировать заказ</h2>
-        <form id="editOrderForm" onsubmit="saveEditedOrder(event)">
-          <input type="text" id="editFullName" placeholder="Полное имя"
-            class="w-full border border-gray-300 rounded-lg px-4 py-2 mb-4" required>
-          <input type="email" id="editEmail" placeholder="Email"
-            class="w-full border border-gray-300 rounded-lg px-4 py-2 mb-4" required>
-          <input type="tel" id="editPhone" placeholder="Телефон"
-            class="w-full border border-gray-300 rounded-lg px-4 py-2 mb-4" required>
-          <input type="text" id="editAddress" placeholder="Адрес доставки"
-            class="w-full border border-gray-300 rounded-lg px-4 py-2 mb-4" required>
-          <div class="flex justify-end">
-            <button type="button" class="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-700 mr-2"
-              onclick="closeModal('orderEditModal')">Отмена</button>
-            <button type="submit"
-              class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">Сохранить</button>
-          </div>
-        </form>
-      </div>
+  <!-- Модальное окно для редактирования заказа -->
+  <div id="orderEditModal" class="modal">
+    <div class="modal-content">
+      <button onclick="closeModal('orderEditModal')">&times;</button>
+      <h2>Редактировать заказ</h2>
+      <form id="editOrderForm" onsubmit="saveEditedOrder(event)">
+        <p>Дата оформления: <span id="editOrderDate"></span> <span id="editDeliveryTime"></span></p>
+        <p><b>Доставка</b></p>
+        <label for="editFullName">Имя получателя</label>
+        <input type="text" id="editFullName" required>
+        <label for="editEmail">Email</label>
+        <input type="email" id="editEmail" required>
+        <label for="editPhone">Телефон</label>
+        <input type="tel" id="editPhone" required>
+        <label for="editAddress">Адрес доставки</label>
+        <input type="text" id="editAddress" required>
+        <label for="editComment">Комментарий</label>
+        <textarea id="editComment"></textarea>
+        <p><b>Состав заказа</b></p>
+        <ul id="orderItems2">
+          <!-- Список блюд будет заполнен программно -->
+        </ul>
+        <p id="totalPrice2">Итоговая стоимость: 0 руб.</p>
+        <button type="button" onclick="closeModal('orderEditModal')">Отмена</button>
+        <button type="submit">Сохранить</button>
+      </form>
     </div>
   </div>
 
-  <div id="deleteConfirmationModal" class="fixed z-10 inset-0 overflow-y-auto hidden">
-    <div class="flex items-center justify-center min-h-screen">
-      <div class="bg-white w-full max-w-md mx-auto rounded-lg shadow-lg p-6">
-        <div class="flex justify-end">
-          <button class="text-gray-400 hover:text-gray-600" onclick="closeModal('deleteConfirmationModal')">
-            <i class="fas fa-times"></i>
-          </button>
-        </div>
-        <h2 class="text-2xl font-bold mb-4">Удалить заказ?</h2>
-        <div class="flex justify-end">
-          <button class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 mr-2" id="confirmDeleteBtn"
-            onclick="deleteOrder()">Да</button>
-          <button class="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-700"
-            onclick="closeModal('deleteConfirmationModal')">Нет</button>
-        </div>
-      </div>
+  <div id="deleteConfirmationModal" class="modal">
+    <div class="modal-content">
+      <h2>Удалить заказ?</h2>
+      <button id="confirmDeleteBtn" onclick="deleteOrder()">Да</button>
+      <button onclick="closeModal('deleteConfirmationModal')">Нет</button>
     </div>
   </div>
 

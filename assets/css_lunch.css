@@ -81,7 +81,10 @@
   text-align: center;
 }
 
-
+#orderItems2 {
+  list-style-type: none;
+  padding: 0;
+}
 
 /* Общие настройки */
 * {
