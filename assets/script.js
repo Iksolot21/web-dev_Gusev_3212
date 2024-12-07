@@ -242,11 +242,41 @@ function proceedToOrder() {
     return;
   }
   const fullOrder = {
-    soup: selectedSoup ? { name: selectedSoup.name, price: selectedSoup.price, keyword: selectedSoup.keyword, image: selectedSoup.image } : null,
-    main: selectedMain ? { name: selectedMain.name, price: selectedMain.price, keyword: selectedMain.keyword, image: selectedMain.image } : null,
-    drink: selectedDrink ? { name: selectedDrink.name, price: selectedDrink.price, keyword: selectedDrink.keyword, image: selectedDrink.image } : null,
-    salad: selectedSalad ? { name: selectedSalad.name, price: selectedSalad.price, keyword: selectedSalad.keyword, image: selectedSalad.image } : null,
-    dessert: selectedDessert ? { name: selectedDessert.name, price: selectedDessert.price, keyword: selectedDessert.keyword, image: selectedDessert.image } : null,
+    soup: selectedSoup ? {
+      id: selectedSoup.id,
+      name: selectedSoup.name,
+      price: selectedSoup.price,
+      keyword: selectedSoup.keyword,
+      image: selectedSoup.image
+    } : null,
+    main: selectedMain ? {
+      id: selectedMain.id,
+      name: selectedMain.name,
+      price: selectedMain.price,
+      keyword: selectedMain.keyword,
+      image: selectedMain.image
+    } : null,
+    drink: selectedDrink ? {
+      id: selectedDrink.id,
+      name: selectedDrink.name,
+      price: selectedDrink.price,
+      keyword: selectedDrink.keyword,
+      image: selectedDrink.image
+    } : null,
+    salad: selectedSalad ? {
+      id: selectedSalad.id,
+      name: selectedSalad.name,
+      price: selectedSalad.price,
+      keyword: selectedSalad.keyword,
+      image: selectedSalad.image
+    } : null,
+    dessert: selectedDessert ? {
+      id: selectedDessert.id,
+      name: selectedDessert.name,
+      price: selectedDessert.price,
+      keyword: selectedDessert.keyword,
+      image: selectedDessert.image
+    } : null,
     totalPrice: calculateTotalPrice()
   };
 

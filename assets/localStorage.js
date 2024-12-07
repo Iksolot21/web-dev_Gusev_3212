@@ -20,10 +20,12 @@ const LocalStorageService = {
   clearOrder() {
     localStorage.removeItem(this.ORDER_KEY);
   },
+
   updateOrderDish(category, dish) {
     const currentOrder = this.getFullOrder() || {};
 
     currentOrder[category] = dish ? {
+      id: dish.id,           // Добавлено сохранение ID
       name: dish.name,
       price: dish.price,
       keyword: dish.keyword,
@@ -39,7 +41,13 @@ const LocalStorageService = {
 
   getFullOrder() {
     const order = localStorage.getItem(this.FULL_ORDER_KEY);
-    return order ? JSON.parse(order) : null;
+    return order ? JSON.parse(order) : {
+      soup: null,
+      main: null,
+      drink: null,
+      salad: null,
+      dessert: null
+    };
   },
 
   clearFullOrder() {
