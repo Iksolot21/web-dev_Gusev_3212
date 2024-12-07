@@ -1,5 +1,12 @@
 import LocalStorageService from './localStorage.js';
 
+let selectedSoup = null;
+let selectedMain = null;
+let selectedDrink = null;
+let selectedSalad = null;
+let selectedDessert = null;
+
+
 document.addEventListener('DOMContentLoaded', () => {
   const fullOrder = LocalStorageService.getFullOrder();
 
@@ -68,6 +75,21 @@ function displayOrderSummary(fullOrder) {
   orderSummary.appendChild(totalPriceDisplay);
 }
 
+function calculateTotalPrice(fullOrder) {
+  let totalPrice = 0;
+
+  const categories = ['soup', 'main', 'drink', 'salad', 'dessert'];
+
+  categories.forEach(category => {
+    const dish = fullOrder[category];
+    if (dish) {
+      totalPrice += dish.price;
+    }
+  });
+
+  return totalPrice;
+}
+
 function createDishCard(dish, category) {
   const card = document.createElement('div');
   card.className = 'dish-card';
@@ -123,29 +145,41 @@ function handleOrderSubmit(event) {
   event.preventDefault();
 
   const form = event.target;
-
   const subscribeCheckbox = form.querySelector('input[name="subscribe"]');
   const subscribeValue = subscribeCheckbox ? subscribeCheckbox.checked : false;
-
   const deliveryType = form.querySelector('input[name="delivery_type"]:checked');
+
   if (!deliveryType) {
     alert('Выберите тип доставки.');
     return;
   }
 
   const deliveryTime = form.querySelector('#delivery_time').value;
+
   if (!deliveryTime && deliveryType.value === 'specific') {
     alert('Укажите время доставки.');
     return;
   }
 
   const fullOrder = LocalStorageService.getFullOrder();
-  if (isEmptyOrder(fullOrder)) {
-    alert('Пожалуйста, сначала выберите блюда');
+
+  // Установка выбранных блюд в соответствующие переменные
+  selectedSoup = fullOrder.soup;
+  selectedMain = fullOrder.main;
+  selectedDrink = fullOrder.drink;
+  selectedSalad = fullOrder.salad;
+  selectedDessert = fullOrder.dessert;
+
+  const comboError = validateCombo();
+  if (comboError) {
+    alert(comboError);
     return;
   }
 
-  // Создаем объект с данными заказа в формате JSON
+  const commentElement = form.querySelector('#comment');
+  const commentValue = commentElement ? commentElement.value.trim() : '';
+
+  // Создаем объект с данными заказа
   const orderData = {
     full_name: form.querySelector('#full_name').value.trim(),
     email: form.querySelector('#email').value.trim(),
@@ -158,33 +192,25 @@ function handleOrderSubmit(event) {
     main_course_id: fullOrder.main ? fullOrder.main.id : '',
     salad_id: fullOrder.salad ? fullOrder.salad.id : '',
     drink_id: fullOrder.drink ? fullOrder.drink.id : '',
-    dessert_id: fullOrder.dessert ? fullOrder.dessert.id : ''
+    dessert_id: fullOrder.dessert ? fullOrder.dessert.id : '',
+    comment: commentValue // Добавляем значение комментария
   };
 
-
-  // Выводим объект JSON данных заказа в консоль для отладки
   console.log('JSON данных заказа:', orderData);
 
-  // Создаем объект FormData и заполняем его данными из объекта JSON
-  let formData = new FormData();
+  const formData = new FormData();
   for (const key in orderData) {
     formData.append(key, orderData[key]);
   }
 
-
-  // Выводим FormData для отправки в консоль для отладки
   console.log('FormData для отправки:', formData);
-  for (const [key, value] of formData.entries()) {
-    console.log(`${key}: ${value}`);
-  }
 
-  // Отправляем запрос на сервер
   const apiKey = "51b2819e-4751-42cf-b166-e18bf8f957cb";
   const apiUrl = `https://edu.std-900.ist.mospolytech.ru/labs/api/orders?api_key=${apiKey}`;
 
   fetch(apiUrl, {
     method: 'POST',
-    body: formData // Передаем объект FormData в качестве тела запроса
+    body: formData
   })
     .then(response => {
       if (!response.ok) {
@@ -203,6 +229,38 @@ function handleOrderSubmit(event) {
       console.error('Ошибка при отправке заказа:', error);
       alert(`Произошла ошибка: ${error.message}`);
     });
+}
+
+function validateCombo(fullOrder) {
+  const hasAnySelection = selectedSoup || selectedMain || selectedDrink || selectedSalad || selectedDessert;
+
+  if (!hasAnySelection) {
+    return "Ничего не выбрано. Выберите блюда для заказа";
+  }
+
+  const hasDrink = selectedDrink !== null;
+
+  if (!hasDrink && (selectedMain || selectedSoup || selectedSalad)) {
+    return "Выберите напиток";
+  }
+
+  if (selectedSoup && !selectedMain && !selectedSalad) {
+    return "Выберите главное блюдо/салат/стартер";
+  }
+
+  if (selectedSalad && !selectedSoup && !selectedMain) {
+    return "Выберите суп или главное блюдо";
+  }
+
+  const validCombinations = [
+    selectedSoup && selectedMain && selectedSalad && selectedDrink,     // Полный комплекс
+    selectedSoup && selectedMain && selectedDrink && !selectedSalad,    // Суп + основное + напиток
+    selectedSoup && selectedSalad && selectedDrink && !selectedMain,    // Суп + салат + напиток
+    selectedMain && selectedSalad && selectedDrink && !selectedSoup,    // Основное + салат + напиток
+    selectedMain && selectedDrink && !selectedSoup && !selectedSalad    // Основное + напиток
+  ];
+
+  return validCombinations.some(combo => combo) ? "" : "Неверная комбинация блюд";
 }
 
 
@@ -228,14 +286,3 @@ function validateOrder(data) {
     return data[field] !== undefined && data[field] !== null && data[field] !== '';
   });
 }
-
-// Добавляем обработчик на отправку формы
-document.addEventListener('DOMContentLoaded', () => {
-  const fullOrder = LocalStorageService.getFullOrder();
-
-  if (fullOrder && !isEmptyOrder(fullOrder)) {
-    displayOrderSummary(fullOrder);
-  } else {
-    document.getElementById('orderSummary').innerHTML = '<p><b>Ничего не выбрано. Чтобы добавить блюда в заказ, перейдите на страницу <a href="lunch.html">Собрать ланч</a>.</b></p>';
-  }
-});
