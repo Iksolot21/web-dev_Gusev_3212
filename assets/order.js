@@ -147,6 +147,7 @@ function handleOrderSubmit(event) {
   const form = event.target;
   const subscribeCheckbox = form.querySelector('input[name="subscribe"]');
   const subscribeValue = subscribeCheckbox ? subscribeCheckbox.checked : false;
+  // Получаем выбранный тип доставки
   const deliveryType = form.querySelector('input[name="delivery_type"]:checked');
 
   if (!deliveryType) {
@@ -154,12 +155,19 @@ function handleOrderSubmit(event) {
     return;
   }
 
+  // Учитываем время доставки
   const deliveryTime = form.querySelector('#delivery_time').value;
 
-  if (!deliveryTime && deliveryType.value === 'specific') {
-    alert('Укажите время доставки.');
+  if (deliveryType.value === 'by_time' && !deliveryTime) {
+    alert('Укажите время доставки для варианта "К указанному времени".');
     return;
   }
+
+  if (deliveryType.value === 'now' && deliveryTime) {
+    alert('Время доставки не требуется для варианта "Как можно скорее". Уберите его.');
+    return;
+  }
+
 
   const fullOrder = LocalStorageService.getFullOrder();
 
@@ -185,8 +193,8 @@ function handleOrderSubmit(event) {
     subscribe: subscribeValue,
     phone: form.querySelector('#phone').value.trim(),
     delivery_address: form.querySelector('#delivery_address').value.trim(),
-    delivery_type: deliveryType.value,
-    delivery_time: deliveryTime,
+    delivery_type: deliveryType.value, // "now" или "by_time"
+    delivery_time: deliveryType.value === 'by_time' ? deliveryTime : '', // Пустое значение, если "now"
     soup_id: fullOrder.soup ? fullOrder.soup.id : '',
     main_course_id: fullOrder.main ? fullOrder.main.id : '',
     salad_id: fullOrder.salad ? fullOrder.salad.id : '',
