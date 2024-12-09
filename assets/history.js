@@ -1,3 +1,4 @@
+// Modify the initial fetch to sort orders by date
 document.addEventListener('DOMContentLoaded', () => {
   const ordersTableBody = document.getElementById('ordersTableBody');
 
@@ -6,8 +7,11 @@ document.addEventListener('DOMContentLoaded', () => {
     .then(async (data) => {
       const orders = data || [];
 
+      // Sort orders by created_at in descending order (newest first)
+      orders.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
       if (orders.length === 0) {
-        ordersTableBody.innerHTML = '<tr><td colspan="6">Нет заказов для отображения.</td></tr>';
+        ordersTableBody.innerHTML = '<tr><td colspan="6" class="text-center p-4">Нет заказов для отображения.</td></tr>';
         return;
       }
 
@@ -26,33 +30,33 @@ document.addEventListener('DOMContentLoaded', () => {
         const totalPrice = await calculateOrderPrice(order);
 
         row.innerHTML = `
-  <td>${order.id}</td>
-  <td>${new Date(order.created_at).toLocaleDateString()}</td>
-  <td>
-    ${[
+            <td>${order.id}</td>
+            <td>${new Date(order.created_at).toLocaleString()}</td>
+            <td>
+              ${[
             soupName,
             mainCourseName,
             drinkName,
             saladName,
             dessertName
           ]
-            .filter(dish => dish && dish !== 'Не выбрано')  // Фильтруем только те блюда, которые существуют и не являются "Не выбрано"
+            .filter(dish => dish && dish !== 'Не выбрано')
             .join(', ')}
-  </td>
-  <td class="text-right">${totalPrice}₽</td>
-  <td>${order.delivery_time}</td>
-  <td>
+            </td>
+            <td class="text-right">${totalPrice}₽</td>
+            <td>${order.delivery_time}</td>
+            <td class="btn-container">
     <button onclick="viewOrderDetails(${order.id})">👁️</button>
     <button onclick="editOrder(${order.id})">✏️</button>
     <button onclick="confirmDeleteOrder(${order.id})">❌</button>
   </td>
-`;
+          `;
         ordersTableBody.appendChild(row);
       }
     })
     .catch(error => {
       console.error('Ошибка при получении заказов для таблицы:', error);
-      ordersTableBody.innerHTML = '<tr><td colspan="6">Произошла ошибка при загрузке данных.</td></tr>';
+      ordersTableBody.innerHTML = '<tr><td colspan="6" class="text-center p-4">Произошла ошибка при загрузке данных.</td></tr>';
     });
 });
 // Function to calculate total order price
@@ -227,7 +231,8 @@ async function editOrder(orderId) {
     document.getElementById('editEmail').value = order.email;
     document.getElementById('editPhone').value = order.phone;
     document.getElementById('editAddress').value = order.delivery_address;
-    document.getElementById('editDeliveryTime').value = order.delivery_time || '';
+    document.getElementById('delivery_time').value = order.delivery_time || '';
+
     document.getElementById('editComment').value = order.comment || '';
     window.editOrderId = orderId;
     const orderDate = new Date(order.created_at);
@@ -236,9 +241,9 @@ async function editOrder(orderId) {
 
     // Отображение времени доставки, если оно указано
     if (order.delivery_time) {
-      document.getElementById('editDeliveryTime').textContent = ` ${order.delivery_time}`;
+      document.getElementById('delivery_time').value = order.delivery_time;
     } else {
-      document.getElementById('editDeliveryTime').textContent = '';
+      document.getElementById('delivery_time').value = '';
     }
 
     // 3. Функция для получения названия блюда с ценой
@@ -324,10 +329,7 @@ function saveEditedOrder(event) {
     .then(data => {
       alert('Заказ успешно изменен');
       closeModal('orderEditModal');
-      closeModal('viewOrderModal'); // Закрыть модальное окно просмотра
       location.reload();
-      viewOrderDetails(window.editOrderId);
-      editOrder(window.editOrderId);
     })
     .catch(error => {
       console.error('Ошибка при сохранении изменений заказа:', error);

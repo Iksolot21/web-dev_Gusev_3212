@@ -6,11 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>История заказов</title>
 
-  <link rel="stylesheet" href="history.css">
+  <link rel="stylesheet" href="assets/history.css">
 </head>
 
 <body>
   <header>
+    <h1>Food Construct</h1>
     <div>
       <nav>
         <a href="index.html">Главная</a>
@@ -24,10 +25,10 @@
 
   <main class="container mx-auto my-8">
     <h1 class="text-2xl font-bold">История заказов</h1>
-    <table class="w-full bg-white shadow-md rounded-lg overflow-hidden">
+    <table class="orders-table w-full bg-white shadow-md rounded-lg overflow-hidden">
       <thead class="bg-gray-200">
         <tr>
-          <th class="px-4 py-3 text-left">#</th>
+          <th class="px-4 py-3 text-left">№</th>
           <th class="px-4 py-3 text-left">Дата оформления</th>
           <th class="px-4 py-3 text-left">Состав заказа</th>
           <th class="px-4 py-3 text-right">Стоимость</th>
@@ -65,19 +66,22 @@
   <!-- Модальное окно для редактирования заказа -->
   <div id="orderEditModal" class="modal">
     <div class="modal-content">
-      <button onclick="closeModal('orderEditModal')">&times;</button>
+      <button class="close-modal-btn" onclick="closeModal('orderEditModal')">&times;</button>
       <h2>Редактировать заказ</h2>
       <form id="editOrderForm" onsubmit="saveEditedOrder(event)">
-        <p>Дата оформления: <span id="editOrderDate"></span> <span id="editDeliveryTime"></span></p>
+        <p><span id="editOrderDate"></span>
         <p><b>Доставка</b></p>
         <label for="editFullName">Имя получателя</label>
         <input type="text" id="editFullName" required>
+        <label for="editAddress">Адрес доставки</label>
+        <input type="text" id="editAddress" required>
+        <label for="delivery_time">Время доставки доставки</label>
+        <input type="time" id="delivery_time" name="delivery_time" min="07:00" max="23:00" step="300">
         <label for="editEmail">Email</label>
         <input type="email" id="editEmail" required>
         <label for="editPhone">Телефон</label>
         <input type="tel" id="editPhone" required>
-        <label for="editAddress">Адрес доставки</label>
-        <input type="text" id="editAddress" required>
+
         <label for="editComment">Комментарий</label>
         <textarea id="editComment"></textarea>
         <p><b>Состав заказа</b></p>
@@ -98,8 +102,10 @@
       <button onclick="closeModal('deleteConfirmationModal')">Нет</button>
     </div>
   </div>
-
-  <script src="history.js"></script>
+  <footer id="contacts">
+    <p>Позвонить нам <a href="tel:+70000000000">+7-000-000-00-00</a></p>
+  </footer>
+  <script src="assets/history.js"></script>
 </body>
 
 </html>

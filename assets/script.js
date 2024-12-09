@@ -95,15 +95,29 @@ async function loadDishes() {
 
 function setupFilterButtons() {
   const filterButtons = document.querySelectorAll('.filter-btn');
+
   filterButtons.forEach(button => {
     button.addEventListener('click', () => {
       const category = button.closest('section').id.replace('filters-', '').replace('-section', '');
       const kind = button.dataset.kind;
-      button.classList.toggle('active');
+
+      // Проверяем текущее состояние кнопки
+      const isActive = button.classList.contains('active');
+
+      // Сброс активных состояний для всех кнопок в текущей категории
+      const categoryButtons = document.querySelectorAll(`#${button.closest('section').id} .filter-btn`);
+      categoryButtons.forEach(btn => btn.classList.remove('active'));
+
+      // Если кнопка уже была активной, удаляем класс 'active' (иначе добавляем)
+      if (!isActive) {
+        button.classList.add('active');
+      }
+
       displayDishes(category, kind);
     });
   });
 }
+
 
 function displayAllDishes() {
   const categories = ['soup', 'main-course', 'drink', 'salad', 'dessert'];

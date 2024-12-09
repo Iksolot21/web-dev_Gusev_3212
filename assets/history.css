@@ -1,7 +1,51 @@
+.orders-table {
+  border-collapse: collapse;
+  width: 100%;
+  background-color: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+footer {
+  /* Фиксированная позиция */
+  bottom: 0;
+  /* Расположение внизу */
+  left: 0;
+  width: 100%;
+  /* Ширина на всю страницу */
+  height: 50px;
+  /* Пример высоты, можете указать нужное значение */
+  background-color: black;
+  color: white;
+  text-align: center;
+}
+
+footer a {
+  color: white;
+  text-decoration: none;
+}
+
+.orders-table th,
+.orders-table td {
+  border: 1px solid #e2e8f0;
+  padding: 12px;
+  text-align: left;
+}
+
+.orders-table th {
+  background-color: #edf2f7;
+  font-weight: bold;
+  text-align: center;
+}
+
+.orders-table td {
+  text-align: center;
+}
+
 /* Общие настройки */
 * {
   box-sizing: border-box;
-  margin: 0;
   padding: 0;
 }
 
@@ -95,7 +139,7 @@ body {
 .modal-content {
   position: relative;
   background-color: #fff;
-  margin: 10% auto;
+  margin: 1% auto;
   /* Центрирование модального окна по вертикали и горизонтали */
   padding: 20px;
   border-radius: 8px;
@@ -159,6 +203,16 @@ button:hover {
   opacity: 0.8;
 }
 
+.btn-container {
+  white-space: nowrap;
+  /* Запрещает перенос текста на новую строку */
+}
+
+.btn-container button {
+  display: inline-block;
+  /* Делает кнопки строчными элементами */
+}
+
 /* Стили для таблицы */
 
 table {
@@ -184,4 +238,21 @@ thead {
 
 tbody tr:nth-child(even) {
   background-color: #f9f9f9;
+}
+
+button.close-modal-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-size: 16px;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+}
+
+button.close-modal-btn:hover {
+  background-color: #ddd;
 }

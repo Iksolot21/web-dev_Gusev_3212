@@ -176,8 +176,7 @@ function handleOrderSubmit(event) {
     return;
   }
 
-  const commentElement = form.querySelector('#comment');
-  const commentValue = commentElement ? commentElement.value.trim() : '';
+  const commentValue = document.getElementById('comment').value;
 
   // Создаем объект с данными заказа
   const orderData = {
@@ -193,7 +192,7 @@ function handleOrderSubmit(event) {
     salad_id: fullOrder.salad ? fullOrder.salad.id : '',
     drink_id: fullOrder.drink ? fullOrder.drink.id : '',
     dessert_id: fullOrder.dessert ? fullOrder.dessert.id : '',
-    comment: commentValue // Добавляем значение комментария
+    comment: commentValue,
   };
 
   console.log('JSON данных заказа:', orderData);
@@ -222,8 +221,8 @@ function handleOrderSubmit(event) {
     })
     .then(data => {
       alert('Ваш заказ успешно оформлен! Спасибо!');
+      console.log('Комментарий:', commentValue);
       LocalStorageService.clearFullOrder();
-      // Дополнительная обработка успешного ответа, если нужно
     })
     .catch(error => {
       console.error('Ошибка при отправке заказа:', error);
