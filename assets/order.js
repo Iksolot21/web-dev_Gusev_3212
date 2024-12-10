@@ -24,21 +24,21 @@ function isEmptyOrder(order) {
 }
 
 function displayOrderSummary(fullOrder) {
-  console.log('Отображаем заказ:', fullOrder); // Отладка
-
   const orderSummary = document.getElementById('orderSummary');
-  orderSummary.innerHTML = ''; // Очищаем перед добавлением
+  const cardsDisplay = document.getElementById('cards-display');
+
+  // Очищаем содержимое перед обновлением
+  orderSummary.innerHTML = '';
+  cardsDisplay.innerHTML = '';
 
   if (isEmptyOrder(fullOrder)) {
+    // Если заказ пустой, отображаем сообщение
     orderSummary.innerHTML = '<p><b>Ничего не выбрано. Чтобы добавить блюда в заказ, перейдите на страницу <a href="lunch.html">Собрать ланч</a>.</b></p>';
+    cardsDisplay.innerHTML = '<p></p><p>Добавьте блюда, чтобы они появились здесь.</p>';
     return;
   }
 
-  const totalPriceDisplay = document.createElement('div');
-  totalPriceDisplay.className = 'total-price';
-
   let totalPrice = 0;
-
   const categories = {
     soup: 'Суп',
     main: 'Основное блюдо',
@@ -47,33 +47,43 @@ function displayOrderSummary(fullOrder) {
     dessert: 'Десерт'
   };
 
+  // Обрабатываем категории и добавляем элементы в интерфейс
   Object.entries(categories).forEach(([category, categoryTitle]) => {
     const dish = fullOrder[category];
     if (dish) {
+      // Создаём карточку и добавляем её в верхний контейнер
+      const cardForDisplay = createDishCard(dish, category);
+      cardsDisplay.appendChild(cardForDisplay);
+
+      // Добавляем информацию в состав заказа
       const orderSection = document.createElement('div');
       orderSection.className = 'order-section';
 
       const sectionTitle = document.createElement('h3');
-      sectionTitle.textContent = categoryTitle;
+      sectionTitle.textContent = `${categoryTitle}`;
       orderSection.appendChild(sectionTitle);
 
-      const cardsContainer = document.createElement('div');
-      cardsContainer.id = `${category}Cards`;
-      cardsContainer.className = 'cards-container';
+      const dishInfo = document.createElement('p');
+      dishInfo.textContent = `${dish.name} ${dish.price} ₽`;
+      orderSection.appendChild(dishInfo);
 
-      const card = createDishCard(dish, category);
-      cardsContainer.appendChild(card);
-
-      orderSection.appendChild(cardsContainer);
       orderSummary.appendChild(orderSection);
 
       totalPrice += dish.price;
     }
   });
 
-  totalPriceDisplay.innerHTML = `<h3>Итого: <span id="totalPriceDisplay">${totalPrice}</span> ₽</h3>`;
-  orderSummary.appendChild(totalPriceDisplay);
+  if (totalPrice > 0) {
+    const totalPriceDisplay = document.createElement('div');
+    totalPriceDisplay.className = 'total-price';
+    totalPriceDisplay.innerHTML = `<h3>Итого: <span id="totalPriceDisplay">${totalPrice}</span> ₽</h3>`;
+    orderSummary.appendChild(totalPriceDisplay);
+  } else {
+    orderSummary.innerHTML = '<p><b>Ничего не выбрано. Чтобы добавить блюда в заказ, перейдите на страницу <a href="lunch.html">Собрать ланч</a>.</b></p>';
+    cardsDisplay.innerHTML = '<p></p><p>Добавьте блюда, чтобы они появились здесь.</p>';
+  }
 }
+
 
 function calculateTotalPrice(fullOrder) {
   let totalPrice = 0;
@@ -109,32 +119,34 @@ function createDishCard(dish, category) {
   return card;
 }
 
-function removeDish(category, cardElement) {
+function removeDish(category) {
   const fullOrder = LocalStorageService.getFullOrder();
 
+  // Удаляем выбранное блюдо из данных заказа
   fullOrder[category] = null;
 
-  // Пересчитываем и удаляем totalPrice, если нужно
-  fullOrder.totalPrice = calculateTotalPrice(fullOrder);
-  if (isEmptyOrder(fullOrder)) {
-    delete fullOrder.totalPrice;
-  }
+  // Пересчитываем общую стоимость
+  const totalPrice = calculateTotalPrice(fullOrder);
 
+  // Сохраняем обновленный заказ
   LocalStorageService.saveFullOrder(fullOrder);
 
-  const orderSection = cardElement.closest('.order-section');
-  orderSection.remove();
-
-  const totalPrice = calculateTotalPrice(fullOrder);
-  const totalPriceDisplay = document.getElementById('totalPriceDisplay');
-  if (totalPriceDisplay) {
-    totalPriceDisplay.textContent = totalPrice;
+  // Обновляем отображение только текущей карточки
+  const cardToRemove = document.querySelector(`.dish-card[data-category="${category}"]`);
+  if (cardToRemove) {
+    cardToRemove.remove(); // Удаляем карточку из DOM
   }
 
+  // Обновляем состав заказа
+  displayOrderSummary(fullOrder);
+
+  // Проверяем, если все карточки удалены, отображаем сообщение
   if (isEmptyOrder(fullOrder)) {
-    window.location.href = 'order.html';
+    const cardsDisplay = document.getElementById('cards-display');
+    cardsDisplay.innerHTML = '<p></p><p>Добавьте блюда, чтобы они появились здесь.</p>';
   }
 }
+
 
 document.addEventListener('DOMContentLoaded', () => {
   const orderForm = document.getElementById('orderForm');
@@ -193,8 +205,8 @@ function handleOrderSubmit(event) {
     subscribe: subscribeValue,
     phone: form.querySelector('#phone').value.trim(),
     delivery_address: form.querySelector('#delivery_address').value.trim(),
-    delivery_type: deliveryType.value, // "now" или "by_time"
-    delivery_time: deliveryType.value === 'by_time' ? deliveryTime : '', // Пустое значение, если "now"
+    delivery_type: deliveryType.value,
+    delivery_time: deliveryType.value === 'by_time' ? deliveryTime : '',
     soup_id: fullOrder.soup ? fullOrder.soup.id : '',
     main_course_id: fullOrder.main ? fullOrder.main.id : '',
     salad_id: fullOrder.salad ? fullOrder.salad.id : '',

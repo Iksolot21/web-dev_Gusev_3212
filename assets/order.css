@@ -7,6 +7,41 @@
 
 
 
+.cards-line {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  /* Три столбца одинаковой ширины */
+  gap: 20px;
+  /* Расстояние между карточками */
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.cards-line .dish-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  overflow: hidden;
+  padding: 10px;
+  text-align: center;
+}
+
+.cards-line .dish-card img {
+  width: 100%;
+  height: auto;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 10px;
+}
+
+.cards-line .dish-card-info {
+  padding: 10px;
+}
+
 .dish-block,
 .dish-card {
   border: 1px solid #ccc;
