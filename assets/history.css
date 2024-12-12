@@ -27,6 +27,8 @@ footer {
   bottom: 0;
   left: 0;
   background-color: black;
+  position: absolute;
+  width: 100%;
   color: white;
   display: flex;
   justify-content: center;
